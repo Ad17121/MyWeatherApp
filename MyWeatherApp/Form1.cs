@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
 using WeatherControl;
 
 namespace MyWeatherApp
@@ -32,7 +26,7 @@ namespace MyWeatherApp
 
         public void Form1_Load(object sender, EventArgs e)
         {
-            var geo = Geocoding.Search(listBoxWeather.Items[0].ToString(),geoApiKey);
+            var geo = Geocoding.Search(listBoxWeather.Items[0].ToString(), geoApiKey);
             var lon = geo.features[0].center[0];
             var lat = geo.features[0].center[1];
             weather = new MyWeather(lat, lon, weatherApiKey);
@@ -47,7 +41,7 @@ namespace MyWeatherApp
             ObservableCollection<string> locs = new ObservableCollection<string>(File.ReadAllLines(path));
             return locs;
         }
-        
+
         private void SaveLocationsToFile(string path)
         {
             File.WriteAllLines(path, locations);
@@ -65,7 +59,6 @@ namespace MyWeatherApp
                 locations.Add(searchText);
                 listBoxWeather.DataSource = null;
                 listBoxWeather.DataSource = locations;
-
             }
         }
 
@@ -84,33 +77,34 @@ namespace MyWeatherApp
         private void FillDaily(MyWeather weather)
         {
             tabControlWeather.TabPages[0].Controls.Clear();
+
             List<WeatherItem> items = new List<WeatherItem>();
 
 
             int count = 0;
             foreach (Daily day in weather.Daily)
-            {    
+            {
                 string iconName = day.weather[0].icon;
                 var icon = Image.FromFile(string.Format(@"C:\Users\adamg\Source\Repos\MyWeatherApp\MyWeatherApp\Resources\{0}.png", iconName));
-                
-                items.Add(new WeatherItem(count.ToString(),icon,(int)day.temp.day,day.wind_deg,(int)day.wind_speed,day.dt));
+
+                items.Add(new WeatherItem(count.ToString(), icon, (int)day.temp.day, day.wind_deg, (int)day.wind_speed, day.dt));
                 count++;
             }
-                items.Reverse();
+            items.Reverse();
 
             foreach (WeatherItem item in items)
             {
                 WindControl w = new WindControl();
 
-                if (item == items[items.Count-1])
+                if (item == items[items.Count - 1])
                 {
                     w.Title = "Now";
-                } 
+                }
                 else
                 {
                     w.Title = item.Time.ToString();
                     DateTime today = UnixTimeStampToDateTime(item.Time);
-                    w.Title = today.DayOfWeek.ToString().Substring(0,3);
+                    w.Title = today.DayOfWeek.ToString().Substring(0, 3);
                 }
                 w.WeatherImage = item.WeatherImage;
                 w.Temperature = item.Temperature;
@@ -124,12 +118,12 @@ namespace MyWeatherApp
                 spacer.Dock = DockStyle.Left;
                 tabControlWeather.TabPages[0].Controls.Add(spacer);
                 tabControlWeather.TabPages[0].Controls.Add(w);
+
             }
         }
 
         private void FillHourly(MyWeather weather)
         {
-
             tabControlWeather.TabPages[1].Controls.Clear();
 
             List<WeatherItem> items = new List<WeatherItem>();
@@ -172,6 +166,7 @@ namespace MyWeatherApp
                 spacer.Dock = DockStyle.Left;
                 tabControlWeather.TabPages[1].Controls.Add(spacer);
                 tabControlWeather.TabPages[1].Controls.Add(w);
+
             }
         }
 
@@ -198,7 +193,7 @@ namespace MyWeatherApp
             lblWindSpeed.Text = weather.Current.wind_speed.ToString();
             lblWeather.Text = weather.Current.weather[0].main.ToString();
             string img = weather.Current.weather[0].icon;
-            pnlWeatherImage.BackgroundImage = Image.FromFile(string.Format(@"C:\Users\adamg\Source\Repos\MyWeatherApp\MyWeatherApp\Resources\{0}.png",img));
+            pnlWeatherImage.BackgroundImage = Image.FromFile(string.Format(@"C:\Users\adamg\Source\Repos\MyWeatherApp\MyWeatherApp\Resources\{0}.png", img));
         }
 
         private void listBoxWeather_SelectedIndexChanged(object sender, EventArgs e)
@@ -207,11 +202,13 @@ namespace MyWeatherApp
             var lon = geo.features[0].center[0];
             var lat = geo.features[0].center[1];
             weather = new MyWeather(lat, lon, weatherApiKey);
+
+            tabControlWeather.SelectedTab.Hide();
             UpdateDisplay(weather);
-            tabControlWeather.Hide();
             FillDaily(weather);
             FillHourly(weather);
-            tabControlWeather.Show();
+            tabControlWeather.SelectedTab.Show();
+
         }
     }
 }

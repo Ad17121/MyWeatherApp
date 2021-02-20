@@ -49,9 +49,6 @@ namespace MyWeatherApp
             this.label3 = new System.Windows.Forms.Label();
             this.lblWindDir = new System.Windows.Forms.Label();
             this.pnlWeatherPanel = new System.Windows.Forms.Panel();
-            this.tabControlWeather = new System.Windows.Forms.TabControl();
-            this.tabDaily = new System.Windows.Forms.TabPage();
-            this.tabHourly = new System.Windows.Forms.TabPage();
             this.lblSunset = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.lblSunrise = new System.Windows.Forms.Label();
@@ -63,6 +60,9 @@ namespace MyWeatherApp
             this.lblWindGust = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.tabControlWeather = new System.Windows.Forms.TabControl();
+            this.tabHourly = new System.Windows.Forms.TabPage();
+            this.tabDaily = new System.Windows.Forms.TabPage();
             this.pnlWeatherPanel.SuspendLayout();
             this.tabControlWeather.SuspendLayout();
             this.SuspendLayout();
@@ -270,7 +270,6 @@ namespace MyWeatherApp
             // pnlWeatherPanel
             // 
             this.pnlWeatherPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
-            this.pnlWeatherPanel.Controls.Add(this.tabControlWeather);
             this.pnlWeatherPanel.Controls.Add(this.lblSunset);
             this.pnlWeatherPanel.Controls.Add(this.label21);
             this.pnlWeatherPanel.Controls.Add(this.lblSunrise);
@@ -296,42 +295,11 @@ namespace MyWeatherApp
             this.pnlWeatherPanel.Controls.Add(this.lblCurrTemp);
             this.pnlWeatherPanel.Controls.Add(this.label1);
             this.pnlWeatherPanel.Controls.Add(this.pnlWeatherImage);
+            this.pnlWeatherPanel.Controls.Add(this.tabControlWeather);
             this.pnlWeatherPanel.Location = new System.Drawing.Point(138, 12);
             this.pnlWeatherPanel.Name = "pnlWeatherPanel";
             this.pnlWeatherPanel.Size = new System.Drawing.Size(635, 419);
             this.pnlWeatherPanel.TabIndex = 4;
-            // 
-            // tabControlWeather
-            // 
-            this.tabControlWeather.Controls.Add(this.tabDaily);
-            this.tabControlWeather.Controls.Add(this.tabHourly);
-            this.tabControlWeather.Location = new System.Drawing.Point(22, 178);
-            this.tabControlWeather.Name = "tabControlWeather";
-            this.tabControlWeather.SelectedIndex = 0;
-            this.tabControlWeather.Size = new System.Drawing.Size(583, 238);
-            this.tabControlWeather.TabIndex = 30;
-            // 
-            // tabDaily
-            // 
-            this.tabDaily.AutoScroll = true;
-            this.tabDaily.Location = new System.Drawing.Point(4, 22);
-            this.tabDaily.Name = "tabDaily";
-            this.tabDaily.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDaily.Size = new System.Drawing.Size(575, 212);
-            this.tabDaily.TabIndex = 0;
-            this.tabDaily.Text = "Daily";
-            this.tabDaily.UseVisualStyleBackColor = true;
-            // 
-            // tabHourly
-            // 
-            this.tabHourly.AutoScroll = true;
-            this.tabHourly.Location = new System.Drawing.Point(4, 22);
-            this.tabHourly.Name = "tabHourly";
-            this.tabHourly.Padding = new System.Windows.Forms.Padding(3);
-            this.tabHourly.Size = new System.Drawing.Size(575, 212);
-            this.tabHourly.TabIndex = 1;
-            this.tabHourly.Text = "Hourly";
-            this.tabHourly.UseVisualStyleBackColor = true;
             // 
             // lblSunset
             // 
@@ -453,6 +421,37 @@ namespace MyWeatherApp
             this.label12.Size = new System.Drawing.Size(96, 20);
             this.label12.TabIndex = 11;
             this.label12.Text = "Wind Speed:";
+            // 
+            // tabControlWeather
+            // 
+            this.tabControlWeather.Controls.Add(this.tabDaily);
+            this.tabControlWeather.Controls.Add(this.tabHourly);
+            this.tabControlWeather.Location = new System.Drawing.Point(12, 168);
+            this.tabControlWeather.Name = "tabControlWeather";
+            this.tabControlWeather.SelectedIndex = 0;
+            this.tabControlWeather.Size = new System.Drawing.Size(610, 238);
+            this.tabControlWeather.TabIndex = 30;
+            // 
+            // tabHourly
+            // 
+            this.tabHourly.AutoScroll = true;
+            this.tabHourly.Location = new System.Drawing.Point(4, 22);
+            this.tabHourly.Name = "tabHourly";
+            this.tabHourly.Padding = new System.Windows.Forms.Padding(3);
+            this.tabHourly.Size = new System.Drawing.Size(602, 212);
+            this.tabHourly.TabIndex = 1;
+            this.tabHourly.Text = "Hourly";
+            this.tabHourly.UseVisualStyleBackColor = true;
+            // 
+            // tabDaily
+            // 
+            this.tabDaily.Location = new System.Drawing.Point(4, 22);
+            this.tabDaily.Name = "tabDaily";
+            this.tabDaily.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDaily.Size = new System.Drawing.Size(602, 212);
+            this.tabDaily.TabIndex = 0;
+            this.tabDaily.Text = "Daily";
+            this.tabDaily.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
