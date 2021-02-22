@@ -15,7 +15,7 @@ namespace MyWeatherApp
         private string weatherApiKey = "218af08b84d7c75ec1bc3a981de5b72a";
         private ObservableCollection<string> locations;
         private string filePath = Environment.CurrentDirectory + @"\locations.txt";
-        private string mapUrl = "https://www.google.com/maps/search/?api=1&output=embed&query=";
+        private string mapUrl = "https://maps.google.co.uk/?output=embed&q=worcester";
         private MyWeather weather;
 
         public Form1()
@@ -46,7 +46,7 @@ namespace MyWeatherApp
             }
             else
             {
-                using (StreamWriter w = File.AppendText(path));
+                using (StreamWriter w = File.AppendText(path)) ;
                 locs = new ObservableCollection<string>(File.ReadAllLines(path));
             }
             if (locs.Count == 0)
@@ -64,15 +64,21 @@ namespace MyWeatherApp
         private void btnAdd_Click(object sender, EventArgs e)
         {
             string searchText = txtSearch.Text;
-            if (checkLocation(searchText))
+            if (searchText.Trim() != "")
             {
-                MessageBox.Show("Location already exists");
-            }
-            else
-            {
-                locations.Add(searchText);
-                listBoxWeather.DataSource = null;
-                listBoxWeather.DataSource = locations;
+                if (checkLocation(searchText))
+                {
+                    MessageBox.Show("Location already exists");
+                }
+                else
+                {
+                    string text = char.ToUpper(searchText[0]) + searchText.Substring(1);
+                    locations.Add(text);
+                    txtSearch.Text = "";
+                    listBoxWeather.DataSource = null;
+                    listBoxWeather.DataSource = locations;
+                    SaveLocationsToFile(filePath);
+                }
             }
         }
 
@@ -99,10 +105,10 @@ namespace MyWeatherApp
             foreach (Daily day in weather.Daily)
             {
                 string iconName = day.weather[0].icon;
-                var icon = (Image)Properties.Resources.ResourceManager.GetObject("_"+iconName);
+                var icon = (Image)Properties.Resources.ResourceManager.GetObject("_" + iconName);
 
                 items.Add(new WeatherItem(count.ToString(), icon, (int)day.temp.day, day.wind_deg, (int)day.wind_speed, day.dt
-                    , day.weather[0].main,(int)day.rain,(int)day.feels_like.day,(int)day.dew_point,(int)day.pressure,(int)day.clouds,(int)day.temp.max,(int)day.temp.min,UnixTimeStampToDateTime(day.sunset).ToString("HH:mm"), UnixTimeStampToDateTime(day.sunrise).ToString("HH:mm")));
+                    , day.weather[0].main, (int)day.rain, (int)day.feels_like.day, (int)day.dew_point, (int)day.pressure, (int)day.clouds, (int)day.temp.max, (int)day.temp.min, UnixTimeStampToDateTime(day.sunset).ToString("HH:mm"), UnixTimeStampToDateTime(day.sunrise).ToString("HH:mm")));
                 count++;
             }
             items.Reverse();
@@ -157,9 +163,9 @@ namespace MyWeatherApp
             foreach (Hourly hour in weather.Hourly)
             {
                 string iconName = hour.weather[0].icon;
-                var icon = (Image)Properties.Resources.ResourceManager.GetObject("_"+iconName);
+                var icon = (Image)Properties.Resources.ResourceManager.GetObject("_" + iconName);
 
-                items.Add(new WeatherItem(count.ToString(), icon, (int)hour.temp, hour.wind_deg, (int)hour.wind_speed, hour.dt, hour.weather[0].main,(int)hour.feels_like,(int)hour.dew_point,hour.pressure,hour.clouds));
+                items.Add(new WeatherItem(count.ToString(), icon, (int)hour.temp, hour.wind_deg, (int)hour.wind_speed, hour.dt, hour.weather[0].main, (int)hour.feels_like, (int)hour.dew_point, hour.pressure, hour.clouds));
                 count++;
             }
             items.Reverse();
@@ -209,6 +215,14 @@ namespace MyWeatherApp
 
         private void UpdateDisplay(MyWeather weather)
         {
+            webBrowserMap.DocumentText =
+                "<html><body>" +
+                "<h1>hello</h1>" +
+                "<iframe src='https://maps.google.co.uk/?output=embed&q=worcester' width='300' height='300' style='border:0;' allowfullscreen='' loading='lazy'>" +
+                "</iframe></body></html>";
+            webBrowserMap.Refresh();
+
+
             lblCurrTemp.Text = weather.Current.temp.ToString();
             lblDewPoint.Text = weather.Current.dew_point.ToString();
             lblFeelsLike.Text = weather.Current.feels_like.ToString();
@@ -222,12 +236,12 @@ namespace MyWeatherApp
             lblWindSpeed.Text = weather.Current.wind_speed.ToString();
             lblWeather.Text = weather.Current.weather[0].main.ToString();
             string img = weather.Current.weather[0].icon;
-            pnlWeatherImage.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("_"+img);
+            pnlWeatherImage.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("_" + img);
         }
 
         private void listBoxWeather_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (txtSearch.Text.Length > 0 && listBoxWeather.SelectedItem != null)
+            if (listBoxWeather.SelectedItem != null && listBoxWeather.SelectedItem.ToString() != "")
             {
                 var geo = Geocoding.Search(listBoxWeather.SelectedItem.ToString(), geoApiKey);
                 var lon = geo.features[0].center[0];
@@ -239,6 +253,17 @@ namespace MyWeatherApp
                 FillDaily(weather);
                 FillHourly(weather);
                 tabControlWeather.SelectedTab.Show();
+            }
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            if (listBoxWeather.SelectedItem != null)
+            {
+                locations.Remove(listBoxWeather.SelectedItem.ToString());
+                listBoxWeather.DataSource = null;
+                listBoxWeather.DataSource = locations;
+                SaveLocationsToFile(filePath);
             }
         }
     }

@@ -20,8 +20,8 @@ namespace MyWeatherApp
         public int MinTemp { get; set; }
         public string Sunset { get; set; }
         public string Sunrise { get; set; }
-        
-            
+
+
         public WeatherItem(string title, Image weatherImage, int temperature, int windDirection, int windSpeed, int time, string weather, int feelsLike, int dewpoint, int pressure, int clouds)
         {
             this.Title = title;
@@ -38,8 +38,8 @@ namespace MyWeatherApp
         }
 
         public WeatherItem(string title, Image weatherImage, int temperature, int windDirection, int windSpeed, int time, string weather, int rain, int feelsLike, int dewpoint, int pressure, int clouds, int maxTemp, int minTemp, string sunSet, string sunRise)
-            :this(title,weatherImage,temperature,windDirection,windSpeed,time,weather,feelsLike,dewpoint,pressure,clouds)
-        { 
+            : this(title, weatherImage, temperature, windDirection, windSpeed, time, weather, feelsLike, dewpoint, pressure, clouds)
+        {
             this.MaxTemp = maxTemp;
             this.MinTemp = minTemp;
             this.Sunrise = sunRise;
