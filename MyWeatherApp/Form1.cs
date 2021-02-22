@@ -15,6 +15,7 @@ namespace MyWeatherApp
         private string weatherApiKey = "218af08b84d7c75ec1bc3a981de5b72a";
         private ObservableCollection<string> locations;
         private string filePath = @"C:\Users\adamg\Source\Repos\MyWeatherApp\locations.txt";
+        private string mapUrl = "https://www.google.com/maps/search/?api=1&output=embed&query=";
         private MyWeather weather;
 
         public Form1()
@@ -87,7 +88,8 @@ namespace MyWeatherApp
                 string iconName = day.weather[0].icon;
                 var icon = Image.FromFile(string.Format(@"C:\Users\adamg\Source\Repos\MyWeatherApp\MyWeatherApp\Resources\{0}.png", iconName));
 
-                items.Add(new WeatherItem(count.ToString(), icon, (int)day.temp.day, day.wind_deg, (int)day.wind_speed, day.dt));
+                items.Add(new WeatherItem(count.ToString(), icon, (int)day.temp.day, day.wind_deg, (int)day.wind_speed, day.dt
+                    , day.weather[0].main,(int)day.rain,(int)day.feels_like.day,(int)day.dew_point,(int)day.pressure,(int)day.clouds,(int)day.temp.max,(int)day.temp.min,UnixTimeStampToDateTime(day.sunset).ToString("HH:mm"), UnixTimeStampToDateTime(day.sunrise).ToString("HH:mm")));
                 count++;
             }
             items.Reverse();
@@ -110,6 +112,15 @@ namespace MyWeatherApp
                 w.Temperature = item.Temperature;
                 w.Degrees = item.WindDirection;
                 w.WindSpeed = item.WindSpeed;
+                w.Weather = item.Weather;
+                w.FeelsLike = item.FeelsLike;
+                w.DewPoint = item.DewPoint;
+                w.Pressure = item.Pressure;
+                w.Clouds = item.Clouds;
+                w.MaxTemp = item.MaxTemp;
+                w.MinTemp = item.MinTemp;
+                w.Sunrise = item.Sunrise;
+                w.Sunset = item.Sunset;
                 w.Dock = DockStyle.Left;
                 w.Padding = new Padding(0, 10, 0, 0);
                 Panel spacer = new Panel();
@@ -135,7 +146,7 @@ namespace MyWeatherApp
                 string iconName = hour.weather[0].icon;
                 var icon = Image.FromFile(string.Format(@"C:\Users\adamg\Source\Repos\MyWeatherApp\MyWeatherApp\Resources\{0}.png", iconName));
 
-                items.Add(new WeatherItem(count.ToString(), icon, (int)hour.temp, hour.wind_deg, (int)hour.wind_speed, hour.dt));
+                items.Add(new WeatherItem(count.ToString(), icon, (int)hour.temp, hour.wind_deg, (int)hour.wind_speed, hour.dt, hour.weather[0].main,(int)hour.feels_like,(int)hour.dew_point,hour.pressure,hour.clouds));
                 count++;
             }
             items.Reverse();
@@ -158,6 +169,11 @@ namespace MyWeatherApp
                 w.Temperature = item.Temperature;
                 w.Degrees = item.WindDirection;
                 w.WindSpeed = item.WindSpeed;
+                w.Weather = item.Weather;
+                w.FeelsLike = item.FeelsLike;
+                w.DewPoint = item.DewPoint;
+                w.Pressure = item.Pressure;
+                w.Clouds = item.Clouds;
                 w.Dock = DockStyle.Left;
                 w.Padding = new Padding(0, 10, 0, 0);
                 Panel spacer = new Panel();
@@ -180,6 +196,7 @@ namespace MyWeatherApp
 
         private void UpdateDisplay(MyWeather weather)
         {
+            webBrowserMap.Url = new Uri(mapUrl + listBoxWeather.SelectedItem.ToString());
             lblCurrTemp.Text = weather.Current.temp.ToString();
             lblDewPoint.Text = weather.Current.dew_point.ToString();
             lblFeelsLike.Text = weather.Current.feels_like.ToString();

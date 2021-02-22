@@ -61,8 +61,9 @@ namespace MyWeatherApp
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.tabControlWeather = new System.Windows.Forms.TabControl();
-            this.tabHourly = new System.Windows.Forms.TabPage();
             this.tabDaily = new System.Windows.Forms.TabPage();
+            this.tabHourly = new System.Windows.Forms.TabPage();
+            this.webBrowserMap = new System.Windows.Forms.WebBrowser();
             this.pnlWeatherPanel.SuspendLayout();
             this.tabControlWeather.SuspendLayout();
             this.SuspendLayout();
@@ -270,6 +271,7 @@ namespace MyWeatherApp
             // pnlWeatherPanel
             // 
             this.pnlWeatherPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
+            this.pnlWeatherPanel.Controls.Add(this.webBrowserMap);
             this.pnlWeatherPanel.Controls.Add(this.lblSunset);
             this.pnlWeatherPanel.Controls.Add(this.label21);
             this.pnlWeatherPanel.Controls.Add(this.lblSunrise);
@@ -432,6 +434,16 @@ namespace MyWeatherApp
             this.tabControlWeather.Size = new System.Drawing.Size(610, 238);
             this.tabControlWeather.TabIndex = 30;
             // 
+            // tabDaily
+            // 
+            this.tabDaily.Location = new System.Drawing.Point(4, 22);
+            this.tabDaily.Name = "tabDaily";
+            this.tabDaily.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDaily.Size = new System.Drawing.Size(602, 212);
+            this.tabDaily.TabIndex = 0;
+            this.tabDaily.Text = "Daily";
+            this.tabDaily.UseVisualStyleBackColor = true;
+            // 
             // tabHourly
             // 
             this.tabHourly.AutoScroll = true;
@@ -443,15 +455,14 @@ namespace MyWeatherApp
             this.tabHourly.Text = "Hourly";
             this.tabHourly.UseVisualStyleBackColor = true;
             // 
-            // tabDaily
+            // webBrowserMap
             // 
-            this.tabDaily.Location = new System.Drawing.Point(4, 22);
-            this.tabDaily.Name = "tabDaily";
-            this.tabDaily.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDaily.Size = new System.Drawing.Size(602, 212);
-            this.tabDaily.TabIndex = 0;
-            this.tabDaily.Text = "Daily";
-            this.tabDaily.UseVisualStyleBackColor = true;
+            this.webBrowserMap.AllowNavigation = false;
+            this.webBrowserMap.Location = new System.Drawing.Point(412, 0);
+            this.webBrowserMap.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowserMap.Name = "webBrowserMap";
+            this.webBrowserMap.Size = new System.Drawing.Size(210, 183);
+            this.webBrowserMap.TabIndex = 5;
             // 
             // Form1
             // 
@@ -514,6 +525,7 @@ namespace MyWeatherApp
         private System.Windows.Forms.TabControl tabControlWeather;
         private System.Windows.Forms.TabPage tabDaily;
         private System.Windows.Forms.TabPage tabHourly;
+        private System.Windows.Forms.WebBrowser webBrowserMap;
     }
 }
 
