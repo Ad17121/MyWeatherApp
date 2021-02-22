@@ -14,7 +14,7 @@ namespace MyWeatherApp
         private string geoApiKey = "pk.eyJ1IjoiYWQxNzEyIiwiYSI6ImNra3M1b21hNjBhODYzMHA2MW10NDkzMXYifQ.b5jn2CIw0_T5hUk2QgXQkQ";
         private string weatherApiKey = "218af08b84d7c75ec1bc3a981de5b72a";
         private ObservableCollection<string> locations;
-        private string filePath = @"C:\Users\adamg\Source\Repos\MyWeatherApp\locations.txt";
+        private string filePath = Environment.CurrentDirectory + @"\locations.txt";
         private string mapUrl = "https://www.google.com/maps/search/?api=1&output=embed&query=";
         private MyWeather weather;
 
@@ -39,7 +39,20 @@ namespace MyWeatherApp
 
         private ObservableCollection<string> GetLocationsFromFile(string path)
         {
-            ObservableCollection<string> locs = new ObservableCollection<string>(File.ReadAllLines(path));
+            ObservableCollection<string> locs;
+            if (File.Exists(path))
+            {
+                locs = new ObservableCollection<string>(File.ReadAllLines(path));
+            }
+            else
+            {
+                using (StreamWriter w = File.AppendText(path));
+                locs = new ObservableCollection<string>(File.ReadAllLines(path));
+            }
+            if (locs.Count == 0)
+            {
+                locs.Add("London");
+            }
             return locs;
         }
 
@@ -86,7 +99,7 @@ namespace MyWeatherApp
             foreach (Daily day in weather.Daily)
             {
                 string iconName = day.weather[0].icon;
-                var icon = Image.FromFile(string.Format(@"C:\Users\adamg\Source\Repos\MyWeatherApp\MyWeatherApp\Resources\{0}.png", iconName));
+                var icon = (Image)Properties.Resources.ResourceManager.GetObject("_"+iconName);
 
                 items.Add(new WeatherItem(count.ToString(), icon, (int)day.temp.day, day.wind_deg, (int)day.wind_speed, day.dt
                     , day.weather[0].main,(int)day.rain,(int)day.feels_like.day,(int)day.dew_point,(int)day.pressure,(int)day.clouds,(int)day.temp.max,(int)day.temp.min,UnixTimeStampToDateTime(day.sunset).ToString("HH:mm"), UnixTimeStampToDateTime(day.sunrise).ToString("HH:mm")));
@@ -144,7 +157,7 @@ namespace MyWeatherApp
             foreach (Hourly hour in weather.Hourly)
             {
                 string iconName = hour.weather[0].icon;
-                var icon = Image.FromFile(string.Format(@"C:\Users\adamg\Source\Repos\MyWeatherApp\MyWeatherApp\Resources\{0}.png", iconName));
+                var icon = (Image)Properties.Resources.ResourceManager.GetObject("_"+iconName);
 
                 items.Add(new WeatherItem(count.ToString(), icon, (int)hour.temp, hour.wind_deg, (int)hour.wind_speed, hour.dt, hour.weather[0].main,(int)hour.feels_like,(int)hour.dew_point,hour.pressure,hour.clouds));
                 count++;
@@ -196,7 +209,6 @@ namespace MyWeatherApp
 
         private void UpdateDisplay(MyWeather weather)
         {
-            webBrowserMap.Url = new Uri(mapUrl + listBoxWeather.SelectedItem.ToString());
             lblCurrTemp.Text = weather.Current.temp.ToString();
             lblDewPoint.Text = weather.Current.dew_point.ToString();
             lblFeelsLike.Text = weather.Current.feels_like.ToString();
@@ -210,22 +222,24 @@ namespace MyWeatherApp
             lblWindSpeed.Text = weather.Current.wind_speed.ToString();
             lblWeather.Text = weather.Current.weather[0].main.ToString();
             string img = weather.Current.weather[0].icon;
-            pnlWeatherImage.BackgroundImage = Image.FromFile(string.Format(@"C:\Users\adamg\Source\Repos\MyWeatherApp\MyWeatherApp\Resources\{0}.png", img));
+            pnlWeatherImage.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("_"+img);
         }
 
         private void listBoxWeather_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var geo = Geocoding.Search(listBoxWeather.SelectedItem.ToString(), geoApiKey);
-            var lon = geo.features[0].center[0];
-            var lat = geo.features[0].center[1];
-            weather = new MyWeather(lat, lon, weatherApiKey);
+            if (txtSearch.Text.Length > 0 && listBoxWeather.SelectedItem != null)
+            {
+                var geo = Geocoding.Search(listBoxWeather.SelectedItem.ToString(), geoApiKey);
+                var lon = geo.features[0].center[0];
+                var lat = geo.features[0].center[1];
+                weather = new MyWeather(lat, lon, weatherApiKey);
 
-            tabControlWeather.SelectedTab.Hide();
-            UpdateDisplay(weather);
-            FillDaily(weather);
-            FillHourly(weather);
-            tabControlWeather.SelectedTab.Show();
-
+                tabControlWeather.SelectedTab.Hide();
+                UpdateDisplay(weather);
+                FillDaily(weather);
+                FillHourly(weather);
+                tabControlWeather.SelectedTab.Show();
+            }
         }
     }
 }

@@ -78,6 +78,8 @@ public class MyWeather
             d.temp.eve = KelvinToCelsius(d.temp.eve);
             d.temp.morn = KelvinToCelsius(d.temp.morn);
 
+            d.dew_point = KelvinToCelsius(d.dew_point);
+
             d.feels_like.day = KelvinToCelsius(d.feels_like.day);
             d.feels_like.night = KelvinToCelsius(d.feels_like.night);
             d.feels_like.eve = KelvinToCelsius(d.feels_like.eve);
@@ -93,6 +95,7 @@ public class MyWeather
             h.temp = KelvinToCelsius(h.temp);
             h.feels_like = KelvinToCelsius(h.feels_like);
             h.wind_speed = MsToMph(h.wind_speed);
+            h.dew_point = KelvinToCelsius(h.dew_point);
         }
     }
 }

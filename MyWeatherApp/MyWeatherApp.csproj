@@ -130,12 +130,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\city.list.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\02d.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -148,6 +146,63 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\01d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\01n.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\02d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\02n.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\03d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\03n.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\04d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\04n.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\09d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\09n.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\10d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\10n.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\11d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\11n.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\13d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\13n.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\50d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\50n.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
