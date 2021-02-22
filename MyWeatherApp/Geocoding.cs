@@ -41,7 +41,18 @@ public class Geocoding
 
     private static GeocodingApi DeserializeGeoJSON(string json)
     {
-        var weather = JsonSerializer.Deserialize<GeocodingApi>(json);
-        return weather;
+        GeocodingApi weather;
+        try
+        {
+            weather = JsonSerializer.Deserialize<GeocodingApi>(json);
+            return weather;
+        }
+        catch
+        {
+            return null;
+        }
+
+
+
     }
 }

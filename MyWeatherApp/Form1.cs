@@ -5,6 +5,14 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using WeatherControl;
+using CefSharp;
+using CefSharp.WinForms;
+//
+//
+// TODO: Remove map and replace with location name hyper link.
+//
+//
+
 
 namespace MyWeatherApp
 {
@@ -15,7 +23,6 @@ namespace MyWeatherApp
         private string weatherApiKey = "218af08b84d7c75ec1bc3a981de5b72a";
         private ObservableCollection<string> locations;
         private string filePath = Environment.CurrentDirectory + @"\locations.txt";
-        private string mapUrl = "https://maps.google.co.uk/?output=embed&q=worcester";
         private MyWeather weather;
 
         public Form1()
@@ -27,13 +34,18 @@ namespace MyWeatherApp
 
         public void Form1_Load(object sender, EventArgs e)
         {
+
             var geo = Geocoding.Search(listBoxWeather.Items[0].ToString(), geoApiKey);
-            var lon = geo.features[0].center[0];
-            var lat = geo.features[0].center[1];
-            weather = new MyWeather(lat, lon, weatherApiKey);
-            UpdateDisplay(weather);
-            FillDaily(weather);
-            FillHourly(weather);
+            if (geo != null)
+            {
+                var lon = geo.features[0].center[0];
+                var lat = geo.features[0].center[1];
+                weather = new MyWeather(lat, lon, weatherApiKey);
+                UpdateDisplay(weather);
+                FillDaily(weather);
+                FillHourly(weather);
+            }
+
 
         }
 
@@ -46,7 +58,7 @@ namespace MyWeatherApp
             }
             else
             {
-                using (StreamWriter w = File.AppendText(path)) ;
+                using (StreamWriter w = File.AppendText(path)) { };
                 locs = new ObservableCollection<string>(File.ReadAllLines(path));
             }
             if (locs.Count == 0)
@@ -72,14 +84,23 @@ namespace MyWeatherApp
                 }
                 else
                 {
-                    string text = char.ToUpper(searchText[0]) + searchText.Substring(1);
-                    locations.Add(text);
-                    txtSearch.Text = "";
-                    listBoxWeather.DataSource = null;
-                    listBoxWeather.DataSource = locations;
-                    SaveLocationsToFile(filePath);
+                    var geo = Geocoding.Search(txtSearch.Text, geoApiKey);
+                    if (geo != null)
+                    {
+                        string text = char.ToUpper(searchText[0]) + searchText.Substring(1);
+                        locations.Add(text);
+                        listBoxWeather.DataSource = null;
+                        listBoxWeather.DataSource = locations;
+                        SaveLocationsToFile(filePath);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Location cannot be found");
+                    }
+
                 }
             }
+            txtSearch.Text = "";
         }
 
         private bool checkLocation(string search)
@@ -215,13 +236,11 @@ namespace MyWeatherApp
 
         private void UpdateDisplay(MyWeather weather)
         {
-            webBrowserMap.DocumentText =
+            string html =
                 "<html><body>" +
-                "<h1>hello</h1>" +
-                "<iframe src='https://maps.google.co.uk/?output=embed&q=worcester' width='300' height='300' style='border:0;' allowfullscreen='' loading='lazy'>" +
-                "</iframe></body></html>";
-            webBrowserMap.Refresh();
-
+                "<iframe src='http://maps.google.co.uk/?output=embed&q=worcester' width='150' height='150' style='border:0;' allowfullscreen='' loading='lazy'>" +
+                "</html></body>";
+            browserMap.LoadHtml(html, "http://rendering/");
 
             lblCurrTemp.Text = weather.Current.temp.ToString();
             lblDewPoint.Text = weather.Current.dew_point.ToString();
@@ -241,18 +260,29 @@ namespace MyWeatherApp
 
         private void listBoxWeather_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listBoxWeather.SelectedItem != null && listBoxWeather.SelectedItem.ToString() != "")
+            if (listBoxWeather.SelectedItem != null && listBoxWeather.SelectedItem.ToString().Trim() != "")
             {
                 var geo = Geocoding.Search(listBoxWeather.SelectedItem.ToString(), geoApiKey);
-                var lon = geo.features[0].center[0];
-                var lat = geo.features[0].center[1];
-                weather = new MyWeather(lat, lon, weatherApiKey);
+                if (geo != null)
+                {
+                    var lon = geo.features[0].center[0];
+                    var lat = geo.features[0].center[1];
+                    weather = new MyWeather(lat, lon, weatherApiKey);
 
-                tabControlWeather.SelectedTab.Hide();
-                UpdateDisplay(weather);
-                FillDaily(weather);
-                FillHourly(weather);
-                tabControlWeather.SelectedTab.Show();
+                    tabControlWeather.SelectedTab.Hide();
+                    UpdateDisplay(weather);
+                    FillDaily(weather);
+                    FillHourly(weather);
+                    tabControlWeather.SelectedTab.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Location cannot be found");
+                    locations.Remove(listBoxWeather.SelectedItem.ToString());
+                    listBoxWeather.DataSource = null;
+                    listBoxWeather.DataSource = locations;
+                }
+
             }
         }
 

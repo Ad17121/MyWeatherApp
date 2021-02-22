@@ -49,6 +49,7 @@ namespace MyWeatherApp
             this.label3 = new System.Windows.Forms.Label();
             this.lblWindDir = new System.Windows.Forms.Label();
             this.pnlWeatherPanel = new System.Windows.Forms.Panel();
+            this.browserMap = new CefSharp.WinForms.ChromiumWebBrowser();
             this.lblSunset = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.lblSunrise = new System.Windows.Forms.Label();
@@ -63,7 +64,6 @@ namespace MyWeatherApp
             this.tabControlWeather = new System.Windows.Forms.TabControl();
             this.tabDaily = new System.Windows.Forms.TabPage();
             this.tabHourly = new System.Windows.Forms.TabPage();
-            this.webBrowserMap = new System.Windows.Forms.WebBrowser();
             this.pnlWeatherPanel.SuspendLayout();
             this.tabControlWeather.SuspendLayout();
             this.SuspendLayout();
@@ -119,7 +119,7 @@ namespace MyWeatherApp
             // pnlWeatherImage
             // 
             this.pnlWeatherImage.BackColor = System.Drawing.Color.Transparent;
-            this.pnlWeatherImage.BackgroundImage = global::MyWeatherApp.Properties.Resources._02d;
+            this.pnlWeatherImage.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlWeatherImage.BackgroundImage")));
             this.pnlWeatherImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pnlWeatherImage.Location = new System.Drawing.Point(12, 16);
             this.pnlWeatherImage.Name = "pnlWeatherImage";
@@ -272,7 +272,7 @@ namespace MyWeatherApp
             // pnlWeatherPanel
             // 
             this.pnlWeatherPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
-            this.pnlWeatherPanel.Controls.Add(this.webBrowserMap);
+            this.pnlWeatherPanel.Controls.Add(this.browserMap);
             this.pnlWeatherPanel.Controls.Add(this.lblSunset);
             this.pnlWeatherPanel.Controls.Add(this.label21);
             this.pnlWeatherPanel.Controls.Add(this.lblSunrise);
@@ -303,6 +303,14 @@ namespace MyWeatherApp
             this.pnlWeatherPanel.Name = "pnlWeatherPanel";
             this.pnlWeatherPanel.Size = new System.Drawing.Size(635, 419);
             this.pnlWeatherPanel.TabIndex = 4;
+            // 
+            // browserMap
+            // 
+            this.browserMap.ActivateBrowserOnCreation = true;
+            this.browserMap.Location = new System.Drawing.Point(459, 13);
+            this.browserMap.Name = "browserMap";
+            this.browserMap.Size = new System.Drawing.Size(163, 149);
+            this.browserMap.TabIndex = 31;
             // 
             // lblSunset
             // 
@@ -456,14 +464,6 @@ namespace MyWeatherApp
             this.tabHourly.Text = "Hourly";
             this.tabHourly.UseVisualStyleBackColor = true;
             // 
-            // webBrowserMap
-            // 
-            this.webBrowserMap.Location = new System.Drawing.Point(459, 14);
-            this.webBrowserMap.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowserMap.Name = "webBrowserMap";
-            this.webBrowserMap.Size = new System.Drawing.Size(150, 150);
-            this.webBrowserMap.TabIndex = 31;
-            // 
             // Form1
             // 
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.TitleBar;
@@ -525,7 +525,7 @@ namespace MyWeatherApp
         private System.Windows.Forms.TabControl tabControlWeather;
         private System.Windows.Forms.TabPage tabDaily;
         private System.Windows.Forms.TabPage tabHourly;
-        private System.Windows.Forms.WebBrowser webBrowserMap;
+        private CefSharp.WinForms.ChromiumWebBrowser browserMap;
     }
 }
 
