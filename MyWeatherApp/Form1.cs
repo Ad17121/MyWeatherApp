@@ -5,8 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using WeatherControl;
-using CefSharp;
-using CefSharp.WinForms;
 //
 //
 // TODO: Remove map and replace with location name hyper link.
@@ -236,12 +234,7 @@ namespace MyWeatherApp
 
         private void UpdateDisplay(MyWeather weather)
         {
-            string html =
-                "<html><body>" +
-                "<iframe src='http://maps.google.co.uk/?output=embed&q=worcester' width='150' height='150' style='border:0;' allowfullscreen='' loading='lazy'>" +
-                "</html></body>";
-            browserMap.LoadHtml(html, "http://rendering/");
-
+            linkLocation.Links[0].LinkData = "https://www.google.com";
             lblCurrTemp.Text = weather.Current.temp.ToString();
             lblDewPoint.Text = weather.Current.dew_point.ToString();
             lblFeelsLike.Text = weather.Current.feels_like.ToString();
@@ -295,6 +288,31 @@ namespace MyWeatherApp
                 listBoxWeather.DataSource = locations;
                 SaveLocationsToFile(filePath);
             }
+        }
+
+        private void pnlWeatherPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblSunrise_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label19_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblCurrTemp_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
