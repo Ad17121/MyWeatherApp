@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Linq;
 using WeatherControl;
+
 //
 //
 // TODO: Remove map and replace with location name hyper link.
@@ -179,7 +181,8 @@ namespace MyWeatherApp
 
 
             int count = 0;
-            foreach (Hourly hour in weather.Hourly)
+            IEnumerable<Hourly> hours = weather.Hourly.Take<Hourly>(12);
+            foreach (Hourly hour in hours)
             {
                 string iconName = hour.weather[0].icon;
                 var icon = (Image)Properties.Resources.ResourceManager.GetObject("_" + iconName);
@@ -220,7 +223,6 @@ namespace MyWeatherApp
                 spacer.Dock = DockStyle.Left;
                 tabControlWeather.TabPages[1].Controls.Add(spacer);
                 tabControlWeather.TabPages[1].Controls.Add(w);
-
             }
         }
 
@@ -232,20 +234,29 @@ namespace MyWeatherApp
             return dtDateTime;
         }
 
+
         private void UpdateDisplay(MyWeather weather)
         {
-            linkLocation.Links[0].LinkData = "https://www.google.com";
-            lblCurrTemp.Text = weather.Current.temp.ToString();
-            lblDewPoint.Text = weather.Current.dew_point.ToString();
-            lblFeelsLike.Text = weather.Current.feels_like.ToString();
-            lblHumidity.Text = weather.Current.humidity.ToString();
-            lblPressure.Text = weather.Current.pressure.ToString();
-            lblSunrise.Text = weather.Current.sunrise.ToString();
-            lblSunset.Text = weather.Current.sunset.ToString();
-            lblTime.Text = weather.Current.dt.ToString();
-            lblWindDir.Text = weather.Current.wind_deg.ToString();
-            lblWindGust.Text = weather.Current.wind_gust.ToString();
-            lblWindSpeed.Text = weather.Current.wind_speed.ToString();
+
+            //string html = string.Format("<html><body> <iframe width = '100%' height = '100%'  src = 'https://api.mapbox.com/styles/v1/mapbox/streets-v11.html?title=false&zoomwheel=true&access_token=pk.eyJ1IjoiYWQxNzEyIiwiYSI6ImNra3M1bXJ2eTA2cHIycW1zeG8xbHV0Z3cifQ.Osxxe0FflP0Ix3c8EFPJVg#15/{0}/{1}' /></body></html>", weather.Lat, weather.Lon);
+            //map.Document.OpenNew(false);
+            //map.Document.Write(html);
+            //map.Refresh();
+            map.Load(string.Format("https://api.mapbox.com/styles/v1/mapbox/streets-v11.html?title=false&zoomwheel=true&access_token=pk.eyJ1IjoiYWQxNzEyIiwiYSI6ImNra3M1bXJ2eTA2cHIycW1zeG8xbHV0Z3cifQ.Osxxe0FflP0Ix3c8EFPJVg#11/{0}/{1}", weather.Lat,weather.Lon));
+
+
+            linkLocation.Text = listBoxWeather.SelectedItem.ToString();
+            lblCurrTemp.Text = weather.Current.temp.ToString() + "°C";
+            //lblDewPoint.Text = weather.Current.dew_point.ToString();
+            //lblFeelsLike.Text = weather.Current.feels_like.ToString();
+            //lblHumidity.Text = weather.Current.humidity.ToString();
+            lblPressure.Text = weather.Current.pressure.ToString() + "hPa";
+            //lblSunrise.Text = weather.Current.sunrise.ToString();
+            //lblSunset.Text = weather.Current.sunset.ToString();
+            //lblTime.Text = weather.Current.dt.ToString();
+            //lblWindDir.Text = weather.Current.wind_deg.ToString();
+            //lblWindGust.Text = weather.Current.wind_gust.ToString();
+            //lblWindSpeed.Text = weather.Current.wind_speed.ToString();
             lblWeather.Text = weather.Current.weather[0].main.ToString();
             string img = weather.Current.weather[0].icon;
             pnlWeatherImage.BackgroundImage = (Image)Properties.Resources.ResourceManager.GetObject("_" + img);
@@ -275,7 +286,6 @@ namespace MyWeatherApp
                     listBoxWeather.DataSource = null;
                     listBoxWeather.DataSource = locations;
                 }
-
             }
         }
 
@@ -288,31 +298,6 @@ namespace MyWeatherApp
                 listBoxWeather.DataSource = locations;
                 SaveLocationsToFile(filePath);
             }
-        }
-
-        private void pnlWeatherPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void lblSunrise_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label19_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblCurrTemp_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

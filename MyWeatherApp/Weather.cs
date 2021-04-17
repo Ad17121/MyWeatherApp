@@ -7,8 +7,8 @@ using System.Text.Json;
 
 public class MyWeather
 {
-    private double Lat { get; set; }
-    private double Lon { get; set; }
+    public double Lat { get; set; }
+    public double Lon { get; set; }
     private string ApiKey { get; set; }
 
     public Current Current { get; set; }
